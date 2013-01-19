@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Statistiks.Lib", "Statistiks.Lib\Statistiks.Lib.csproj", "{21CB55DD-21EB-4393-B20E-8A5DE4A00518}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Statistiks.Report", "Statistiks.Report\Statistiks.Report.csproj", "{CFDA8808-C0AD-41F8-B91C-939BB4ABEBC2}"
