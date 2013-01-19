@@ -13,6 +13,8 @@ namespace Statistiks.Lib
         #region Data
         private Dictionary<string, ulong> _keyboardEvents;
         private Dictionary<MouseMessage, ulong> _mouseEvents;
+        private int[,] _mouseMove;
+        private ulong _mouseMoveLength;
         private Dictionary<string, ulong> _windowEvents;
         private IntPtr _activeWindow;
         #endregion
@@ -21,12 +23,15 @@ namespace Statistiks.Lib
         public Dictionary<string, ulong> KeyboardEvents { get { return _keyboardEvents; } }
         public Dictionary<MouseMessage, ulong> MouseEvents { get { return _mouseEvents; } }
         public Dictionary<string, ulong> WindowEvents { get { return _windowEvents; } }
+        public ulong MouseMoveLength { get { return _mouseMoveLength; } }
         #endregion
 
         public StatistiksLib()
         {
             _keyboardEvents = new Dictionary<string, ulong>();
             _mouseEvents = new Dictionary<MouseMessage, ulong>();
+            _mouseMove = new int[2,2];
+            _mouseMoveLength = new ulong();
             _windowEvents = new Dictionary<string, ulong>();
             _activeWindow = IntPtr.Zero;
             _kHook = new KeyboardHook();
@@ -48,6 +53,17 @@ namespace Statistiks.Lib
 
         private void _mHookEventRaised(object sender, MouseEventArgs e)
         {
+            if (e.Message == MouseMessage.WM_MOUSEMOVE)
+                if (_mouseMove.Length == 0) {
+                    _mouseMove[0, 0] = e.Point.X;
+                    _mouseMove[0, 1] = e.Point.Y;
+                    _mouseMoveLength = 0;
+                } else {
+                    _mouseMoveLength += (ulong)Math.Sqrt(Math.Pow(e.Point.X - _mouseMove[0, 0], 2) + Math.Pow(e.Point.Y - _mouseMove[0, 1], 2)) / 38; // magic 38!
+                    _mouseMove[0, 0] = e.Point.X;
+                    _mouseMove[0, 1] = e.Point.Y;
+                }
+            
             if (_mouseEvents.ContainsKey(e.Message))
                 _mouseEvents[e.Message] += 1;
             else

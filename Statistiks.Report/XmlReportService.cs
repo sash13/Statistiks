@@ -8,7 +8,7 @@ namespace Statistiks.Report
 {
     public class XmlReportService : IReportService
     {
-        public void SaveReport(DateTime sessionStart, DateTime sessionEnd, string path, Dictionary<MouseMessage, ulong> mouseUsage, Dictionary<string, ulong> keyboardUsage, Dictionary<string, ulong> windowUsage)
+        public void SaveReport(DateTime sessionStart, DateTime sessionEnd, string path, Dictionary<MouseMessage, ulong> mouseUsage, Dictionary<string, ulong> keyboardUsage, Dictionary<string, ulong> windowUsage, ulong mouseMoveLength)
         {
             XDocument xDoc = new XDocument(new XDeclaration("1.0", "", ""),
                 new XElement("StatistiksReport",
@@ -24,6 +24,11 @@ namespace Statistiks.Report
                         select new XElement("Event",
                             new XAttribute("Code", x.Key.ToString()),
                             new XAttribute("Count", x.Value))),
+                    new XElement("MouseMetr",
+                        from x in mouseUsage.Where(x => x.Key == MouseMessage.WM_MOUSEMOVE)
+                        select new XElement("Event",
+                            new XAttribute("Code", "Length"),
+                            new XAttribute("Count", mouseMoveLength))),
                     new XElement("WindowsEvents",
                         from x in windowUsage
                         select new XElement("Event",

@@ -54,7 +54,7 @@ namespace Statistiks.App
 
         private void SaveReport(DateTime sessionEnd, string path)
         {
-            _reportService.SaveReport(_seesionStart, sessionEnd, path, _stLib.MouseEvents, _stLib.KeyboardEvents, _stLib.WindowEvents);
+            _reportService.SaveReport(_seesionStart, sessionEnd, path, _stLib.MouseEvents, _stLib.KeyboardEvents, _stLib.WindowEvents, _stLib.MouseMoveLength);
         }
 
         private void AutoStart()
@@ -112,6 +112,24 @@ namespace Statistiks.App
             if (disposing)
                 _trayIcon.Dispose();
             base.Dispose(disposing);
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // Program
+            // 
+            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.Name = "Program";
+            this.Load += new System.EventHandler(this.Program_Load);
+            this.ResumeLayout(false);
+
+        }
+
+        private void Program_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
